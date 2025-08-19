@@ -2,41 +2,77 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* AgriTrade Design System - Agricultural B2B Marketplace */
 
 @layer base {
   :root {
+    /* Core Agricultural Color Palette */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 25 25% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 25 25% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 25 25% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary: Rich Agricultural Green */
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 98%;
+    --primary-hover: 142 76% 32%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary: Warm Earth Tone */
+    --secondary: 33 95% 64%;
+    --secondary-foreground: 25 25% 15%;
+    --secondary-hover: 33 95% 60%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted: Soft Agricultural Neutrals */
+    --muted: 60 9% 96%;
+    --muted-foreground: 25 15% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent: Fresh Crop Green */
+    --accent: 120 60% 96%;
+    --accent-foreground: 142 76% 36%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Destructive: Warm Red */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Borders & Inputs */
+    --border: 60 9% 88%;
+    --input: 60 9% 88%;
+    --ring: 142 76% 36%;
 
-    --radius: 0.5rem;
+    /* Success Green */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 98%;
+
+    /* Warning Orange */
+    --warning: 25 95% 53%;
+    --warning-foreground: 0 0% 98%;
+
+    /* Info Blue */
+    --info: 200 100% 47%;
+    --info-foreground: 0 0% 98%;
+
+    /* Agricultural Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(142 76% 36%), hsl(120 65% 45%));
+    --gradient-secondary: linear-gradient(135deg, hsl(33 95% 64%), hsl(25 95% 60%));
+    --gradient-hero: linear-gradient(135deg, hsl(142 76% 36%) 0%, hsl(120 65% 45%) 50%, hsl(95 60% 50%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(60 9% 98%) 100%);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(25 25% 15% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(25 25% 15% / 0.1), 0 2px 4px -1px hsl(25 25% 15% / 0.06);
+    --shadow-lg: 0 10px 15px -3px hsl(25 25% 15% / 0.1), 0 4px 6px -2px hsl(25 25% 15% / 0.05);
+    --shadow-green: 0 10px 25px -5px hsl(142 76% 36% / 0.25);
+
+    /* Typography */
+    --font-heading: 'Inter', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+
+    /* Spacing & Layout */
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
