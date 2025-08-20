@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -10,21 +12,51 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Sprout, Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { signIn } = useAuth();
+  const { toast } = useToast();
+  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     rememberMe: false
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login data:", formData);
+    setIsLoading(true);
+
+    try {
+      const { error } = await signIn(formData.email, formData.password);
+      
+      if (error) {
+        toast({
+          title: "Login Failed",
+          description: error.message,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Welcome back!",
+          description: "You have successfully signed in."
+        });
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      toast({
+        title: "Login Failed",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const demoAccounts = [
@@ -135,8 +167,14 @@ const Login = () => {
                 </Link>
               </div>
 
-              <Button type="submit" variant="hero" size="lg" className="w-full">
-                Sign In
+              <Button 
+                type="submit" 
+                variant="hero" 
+                size="lg" 
+                className="w-full"
+                disabled={isLoading}
+              >
+                {isLoading ? "Signing In..." : "Sign In"}
               </Button>
 
               <div className="text-center">

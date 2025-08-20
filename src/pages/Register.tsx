@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -11,9 +13,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Sprout, User, Building, Shield } from "lucide-react";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const { signUp } = useAuth();
+  const { toast } = useToast();
   const [searchParams] = useSearchParams();
   const defaultRole = searchParams.get("role") || "";
   const [selectedRole, setSelectedRole] = useState(defaultRole);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -67,10 +73,62 @@ const Register = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle registration logic here
-    console.log("Registration data:", { ...formData, role: selectedRole });
+    
+    if (formData.password !== formData.confirmPassword) {
+      toast({
+        title: "Password Mismatch",
+        description: "Passwords don't match!",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (!formData.agreeToTerms) {
+      toast({
+        title: "Terms Required",
+        description: "Please agree to the terms and conditions!",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const { error } = await signUp(
+        formData.email, 
+        formData.password, 
+        {
+          first_name: formData.fullName.split(' ')[0],
+          last_name: formData.fullName.split(' ').slice(1).join(' '),
+          role: selectedRole as 'farmer' | 'trader'
+        }
+      );
+      
+      if (error) {
+        toast({
+          title: "Registration Failed",
+          description: error.message,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Registration Successful!",
+          description: "Please check your email to confirm your account."
+        });
+        navigate('/login');
+      }
+    } catch (error) {
+      toast({
+        title: "Registration Failed",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -298,9 +356,9 @@ const Register = () => {
                   variant="hero" 
                   size="lg" 
                   className="w-full"
-                  disabled={!formData.agreeToTerms}
+                  disabled={!formData.agreeToTerms || isLoading}
                 >
-                  Create Account
+                  {isLoading ? "Creating Account..." : "Create Account"}
                 </Button>
 
                 {/* Login Link */}
