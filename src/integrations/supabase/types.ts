@@ -1564,6 +1564,18 @@ export type Database = {
         Args: { "": unknown }
         Returns: unknown
       }
+      is_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      is_farmer: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      is_trader: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       json: {
         Args: { "": unknown }
         Returns: Json
